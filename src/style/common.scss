@@ -1,0 +1,154 @@
+@charset "UTF-8";
+/**
+ * author: zhanghuan
+ * created: 2018/4/20
+ * describe: 公共样式
+ */
+/*var*/
+$mainClr: #3a85ea;
+
+/*var end*/
+
+/*function start*/
+@function px2em($px, $base-font-size: 24px) {
+  @if (unitless($px)) {
+    @warn "Assuming #{$px} to be in pixels, attempting to convert it into pixels for you";
+    @return px2em($px + 0px); // That may fail.
+  } @else if (unit($px) == em) {
+    @return $px;
+  }
+  @return ($px / $base-font-size) * 1em;
+}
+
+@function px2($px) {
+  @if (unitless($px)) {
+    @warn "Assuming #{$px} to be in pixels, attempting to convert it into pixels for you";
+    @return px2($px + 0px); // That may fail.
+  } @else if (unit($px) == em) {
+    @return $px / 2;
+  }
+  @return $px /2;
+}
+
+/*function end*/
+
+/*mixin start*/
+
+// 背景图片地址和大小
+@mixin bis($url) {
+  background-image: url($url);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+@mixin borderRadius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
+  border-radius: $radius;
+}
+
+//定位全屏
+@mixin allcover {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+//定位上下左右居中
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+//定位上下居中
+@mixin ct {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+//定位上下居中
+@mixin cl {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+//宽高
+@mixin wh($width, $height) {
+  width: $width;
+  height: $height;
+}
+
+//字体大小、行高、字体
+@mixin font($size, $line-height, $family: 'Microsoft YaHei') {
+  font: #{$size}/#{$line-height} $family;
+}
+
+//字体大小，颜色
+@mixin sc($size, $color) {
+  font-size: $size;
+  color: $color;
+}
+
+//flex 布局和 子元素 对其方式
+@mixin fj($type: space-between) {
+  display: flex;
+  justify-content: $type;
+
+}
+
+@mixin font-dpr($font-size) {
+  font-size: $font-size;
+  [data-dpr="2"] & {
+    font-size: $font-size * 2;
+  }
+  [data-dpr="3"] & {
+    font-size: $font-size * 3;
+  }
+}
+
+@mixin px2rem($property,$px-values,$baseline-px:75px,$support-for-ie:false) {
+
+  //Conver the baseline into rems
+  $baseline-rem: $baseline-px / 1rem * 1;
+  //Print the first line in pixel values
+  @if $support-for-ie {
+    #{$property}: $px-values;
+  }
+  //if there is only one (numeric) value, return the property/value line for it.
+  @if type-of($px-values) == "number" {
+    #{$property}: $px-values / $baseline-rem;
+  } @else { //Create an empty list that we can dump values into $rem-values:();
+    @each $value in $px-values { // If the value is zero or not a number, return it
+      @if $value == 0 or type-of($value) != "number" {
+        $rem-values: append($rem-values, $value / $baseline-rem);
+      }
+    }
+    // Return the property and its list of converted values
+    #{$property}: $rem-values;
+  }
+}
+
+@mixin font-dpr($font-size) {
+  font-size: $font-size;
+  [data-dpr="2"] & {
+    font-size: $font-size * 2;
+  }
+  [data-dpr="3"] & {
+    font-size: $font-size * 3;
+  }
+}
+
+@mixin etc($n) {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $n;
+}
+
+/*mixin end*/
